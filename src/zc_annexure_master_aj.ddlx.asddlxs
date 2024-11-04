@@ -1,0 +1,43 @@
+@Metadata.layer: #CORE
+annotate entity ZC_ANNEXURE_MASTER_AJ with
+{
+  @UI.lineItem: [{ position: 10 }]
+  @UI.lineItem: [{label: 'Annexure ID'}]
+  AnnexureId;
+
+  @UI.lineItem: [{ position: 20 }]
+  @UI.lineItem: [{label: 'Annexure Name'}]
+  AnnexureName;
+
+  @UI.lineItem: [{ position: 30 }]
+  @UI.lineItem: [{label: 'Items'}]
+  ItemsCount;
+
+  @UI.lineItem: [{ position: 40 }]
+  @UI.lineItem: [{label: 'Category'}]
+  Category;
+
+  @UI.lineItem: [{ position: 50 }]
+  @UI.lineItem: [{label: 'Type'}]
+  @UI.selectionField: [{  position: 10 }]
+  Type;
+
+  @UI.lineItem: [{ position: 60 }]
+  @UI.lineItem: [{label: 'Status'}]
+  @UI.selectionField: [{  position: 20 }]
+  Status;
+
+  @UI.lineItem: [{ position: 70 }]
+  @UI.lineItem: [{label: 'Created On'}]
+  CreatedDate;
+
+  @UI.lineItem: [{ position: 80 }]
+  @UI.lineItem: [{label: 'Created At'}]
+  CreatedTime;
+
+  @UI.lineItem: [{ position: 90 }]
+  @UI.lineItem: [{label: 'Owner'}]
+  @UI.selectionField: [{  position: 30 }]
+  CreatedBy;
+
+}

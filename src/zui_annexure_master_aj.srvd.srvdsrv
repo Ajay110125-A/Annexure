@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service definition for Annexure Master'
+define service ZUI_ANNEXURE_MASTER_AJ {
+  expose ZC_ANNEXURE_MASTER_AJ;
+}
