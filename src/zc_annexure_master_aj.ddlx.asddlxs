@@ -1,54 +1,82 @@
 @Metadata.layer: #CORE
+@UI.headerInfo:{
+    typeName: 'Annexure',
+    typeNamePlural: 'Annexures',
+    title: {
+             type: #STANDARD,
+             label: 'Annexure',
+             value: 'AnnexureId'
+           }
+
+}
 annotate entity ZC_ANNEXURE_MASTER_AJ with
 {
+  @UI.facet: [{
+                id: 'Annexure',
+                purpose: #STANDARD,
+                position: 10,
+                label: 'Annexure Details',
+                type: #IDENTIFICATION_REFERENCE
+             }]
+
   @UI.lineItem: [{ position: 10 }]
   @UI.lineItem: [{label: 'Annexure ID'}]
+  @UI.identification: [{  position: 10, label: 'Annexure ID'}]
   AnnexureId;
 
   @UI.lineItem: [{ position: 20 }]
   @UI.lineItem: [{label: 'Annexure Name'}]
+  @UI.identification: [{  position: 20, label: 'Annexure Name' }]
   AnnexureName;
 
   @UI.lineItem: [{ position: 30 }]
   @UI.lineItem: [{label: 'Items'}]
+  @Consumption.valueHelpDefinition: [{  entity: { name: 'ZI_ANNEXURE_ITEMS_VH', element: 'Item'}}]
+  @UI.identification: [{  position: 30, label: 'Items'}]
   ItemsCount;
 
   @UI.lineItem: [{ position: 40 }]
   @UI.lineItem: [{label: 'Category'}]
+  @UI.identification: [{  position: 40, label: 'Category' }]
   Category;
 
   @UI.lineItem: [{ position: 50 }]
   @UI.lineItem: [{label: 'Type'}]
   @UI.selectionField: [{  position: 10 }]
   @Consumption.valueHelpDefinition: [
-                                     { entity:{ 
-                                                name: 'ZI_ANNEXURE_TYPE_VH', 
+                                     { entity:{
+                                                name: 'ZI_ANNEXURE_TYPE_VH',
                                                 element: 'Type'
                                                }
                                      }
                                     ]
+  @UI.identification: [{  position: 50, label: 'Type'}]
   Type;
 
   @UI.lineItem: [{ position: 60 }]
   @UI.lineItem: [{label: 'Status'}]
   @UI.selectionField: [{  position: 20 }]
-  @Consumption.valueHelpDefinition: [{ entity: 
-                                               { name: 'ZI_ANNEXURE_STATUS_VH', element: 'Status'} 
+  @Consumption.valueHelpDefinition: [{ entity:
+                                               { name: 'ZI_ANNEXURE_STATUS_VH', element: 'Status'}
                                     }]
+  @UI.identification: [{  position: 60, label: 'Status' }]
   Status;
 
   @UI.lineItem: [{ position: 70 }]
   @UI.lineItem: [{label: 'Created On'}]
+  @UI.identification: [{  position: 70, label: 'Created Date' }]
   CreatedDate;
 
   @UI.lineItem: [{ position: 80 }]
   @UI.lineItem: [{label: 'Created At'}]
+  @UI.identification: [{  position: 80, label: 'Created Time' }]
   CreatedTime;
 
   @UI.lineItem: [{ position: 90 }]
   @UI.lineItem: [{label: 'Owner'}]
   @UI.selectionField: [{  position: 30 }]
   @Consumption.valueHelpDefinition: [{  entity : { name: 'ZI_ANNEXURE_USERS_VH', element: 'Value'} }]
+  @UI.identification: [{  position: 90, label: 'Owner' }]
   CreatedBy;
 
 }

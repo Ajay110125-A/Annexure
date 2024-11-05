@@ -77,6 +77,19 @@ CLASS zcl_aj_insert_data IMPLEMENTATION.
                           ( prgname = 'USER_ID' var = '03' value = 'KIM_DAHYUN' )
                          ).
 
+    li_constant = VALUE #(
+                          ( prgname = 'ITEMS' var = '1' value = '1 Item' )
+                          ( prgname = 'ITEMS' var = '2' value = '2 Items' )
+                          ( prgname = 'ITEMS' var = '3' value = '3 Items' )
+                          ( prgname = 'ITEMS' var = '4' value = '4 Items' )
+                          ( prgname = 'ITEMS' var = '5' value = '5 Items' )
+                          ( prgname = 'ITEMS' var = '6' value = '6 Items' )
+                          ( prgname = 'ITEMS' var = '7' value = '7 Items' )
+                          ( prgname = 'ITEMS' var = '8' value = '8 Items' )
+                          ( prgname = 'ITEMS' var = '9' value = '9 Items' )
+                          ( prgname = 'ITEMS' var = '10' value = '10 Items' )
+                         ).
+
     MODIFY zaj_anx_const FROM TABLE @li_constant.
 
     COMMIT WORK AND WAIT.
