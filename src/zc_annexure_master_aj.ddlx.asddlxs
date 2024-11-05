@@ -20,11 +20,21 @@ annotate entity ZC_ANNEXURE_MASTER_AJ with
   @UI.lineItem: [{ position: 50 }]
   @UI.lineItem: [{label: 'Type'}]
   @UI.selectionField: [{  position: 10 }]
+  @Consumption.valueHelpDefinition: [
+                                     { entity:{ 
+                                                name: 'ZI_ANNEXURE_TYPE_VH', 
+                                                element: 'Type'
+                                               }
+                                     }
+                                    ]
   Type;
 
   @UI.lineItem: [{ position: 60 }]
   @UI.lineItem: [{label: 'Status'}]
   @UI.selectionField: [{  position: 20 }]
+  @Consumption.valueHelpDefinition: [{ entity: 
+                                               { name: 'ZI_ANNEXURE_STATUS_VH', element: 'Status'} 
+                                    }]
   Status;
 
   @UI.lineItem: [{ position: 70 }]
@@ -38,6 +48,7 @@ annotate entity ZC_ANNEXURE_MASTER_AJ with
   @UI.lineItem: [{ position: 90 }]
   @UI.lineItem: [{label: 'Owner'}]
   @UI.selectionField: [{  position: 30 }]
+  @Consumption.valueHelpDefinition: [{  entity : { name: 'ZI_ANNEXURE_USERS_VH', element: 'Value'} }]
   CreatedBy;
 
 }
