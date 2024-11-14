@@ -9,8 +9,8 @@ define root view entity ZC_ANNEXURE_MASTER_AJ
       AnnexureName,
       ItemsCount,
       Category,
-       @ObjectModel.text.element: [ 'TypeDescription' ]
-       @UI.textArrangement: #TEXT_ONLY
+      @ObjectModel.text.element: [ 'TypeDescription' ]
+      @UI.textArrangement: #TEXT_ONLY
       Type,
       TypeDescription,
       @ObjectModel.text.element: [ 'StatusDescription' ]

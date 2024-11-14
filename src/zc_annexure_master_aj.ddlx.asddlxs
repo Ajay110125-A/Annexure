@@ -19,7 +19,10 @@ annotate entity ZC_ANNEXURE_MASTER_AJ with
                 type: #IDENTIFICATION_REFERENCE
              }]
 
-  @UI.lineItem: [{ position: 10 }]
+  @UI.lineItem: [
+                  { position: 10 },
+                  { type: #FOR_ACTION, dataAction: 'Accept', label: 'Accept' }
+                ]
   @UI.lineItem: [{label: 'Annexure ID'}]
   @UI.identification: [{  position: 10, label: 'Annexure ID'}]
   AnnexureId;
@@ -31,13 +34,19 @@ annotate entity ZC_ANNEXURE_MASTER_AJ with
 
   @UI.lineItem: [{ position: 30 }]
   @UI.lineItem: [{label: 'Items'}]
-  @Consumption.valueHelpDefinition: [{  entity: { name: 'ZI_ANNEXURE_ITEMS_VH', element: 'Item'}}]
   @UI.identification: [{  position: 30, label: 'Items'}]
   ItemsCount;
 
   @UI.lineItem: [{ position: 40 }]
   @UI.lineItem: [{label: 'Category'}]
   @UI.identification: [{  position: 40, label: 'Category' }]
+  @Consumption.valueHelpDefinition: [
+                                     { entity:{
+                                                name: 'ZI_ANNEXURE_CATEGORY_VH',
+                                                element: 'Category'
+                                               }
+                                     }
+                                    ]
   Category;
 
   @UI.lineItem: [{ position: 50 }]

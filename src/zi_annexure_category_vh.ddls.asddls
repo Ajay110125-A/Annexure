@@ -1,17 +1,15 @@
 @AbapCatalog.viewEnhancementCategory: [#NONE]
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Items Value Help'
+@EndUserText.label: 'Category Value Help'
 @Metadata.ignorePropagatedAnnotations: true
 @ObjectModel.usageType:{
     serviceQuality: #X,
     sizeCategory: #S,
     dataClass: #MIXED
 }
-define view entity ZI_ANNEXURE_ITEMS_VH
-  as select from zaj_anx_const
+define view entity ZI_ANNEXURE_CATEGORY_VH as select from zaj_anx_category
 {
-  key var   as Item,
-      value as Description
+    key user_id as UserId,
+    key category as Category
 }
-where
-  prgname = 'ITEMS'
+//where user_id = 

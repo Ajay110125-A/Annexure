@@ -1,0 +1,32 @@
+unmanaged implementation in class ZBP_I_ANNEXURE_MASTER_AJ unique;
+strict ( 2 );
+
+define behavior for ZI_ANNEXURE_MASTER_AJ //alias <alias_name>
+//persistent table <???>
+implementation in class ZBP_MASTER_AY_U unique
+lock master
+authorization master ( instance )
+etag master Timestamp
+late numbering
+{
+  create;
+  update;
+  delete;
+  action ( features : instance ) Accept result [1] $self;
+  field ( readonly ) AnnexureId, CreatedBy, CreatedDate, CreatedTime;
+  field ( mandatory : create ) AnnexureName, ItemsCount, Category, Type, Status;
+
+  mapping for zaj_annex_master
+    {
+      AnnexureId   = annexure_id;
+      AnnexureName = annexure_name;
+      ItemsCount   = items_count;
+      Category     = category;
+      Type         = type;
+      Status       = status;
+      CreatedDate  = created_date;
+      CreatedTime  = created_time;
+      CreatedBy    = created_by;
+      Timestamp    = timestamp;
+    }
+}
