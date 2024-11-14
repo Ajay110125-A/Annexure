@@ -94,22 +94,22 @@ CLASS zcl_aj_insert_data IMPLEMENTATION.
 
     DELETE FROM zaj_anx_const WHERE prgname = 'ITEMS'.
 
-    DATA : li_items TYPE TABLE OF zaj_anx_items.
-
-    li_items = VALUE #(
-                        ( item = '1' description = '1 Item' )
-                        ( item = '2' description = '2 Items' )
-                        ( item = '3' description = '3 Items' )
-                        ( item = '4' description = '4 Items' )
-                        ( item = '5' description = '5 Items' )
-                        ( item = '6' description = '6 Items' )
-                        ( item = '7' description = '7 Items' )
-                        ( item = '8' description = '8 Items' )
-                        ( item = '9' description = '9 Items' )
-                        ( item = '10' description  = '10 Items' )
-                      ).
-
-    MODIFY zaj_anx_items FROM TABLE @li_items.
+*    DATA : li_items TYPE TABLE OF zaj_anx_items.
+*
+*    li_items = VALUE #(
+*                        ( item = '1' description = '1 Item' )
+*                        ( item = '2' description = '2 Items' )
+*                        ( item = '3' description = '3 Items' )
+*                        ( item = '4' description = '4 Items' )
+*                        ( item = '5' description = '5 Items' )
+*                        ( item = '6' description = '6 Items' )
+*                        ( item = '7' description = '7 Items' )
+*                        ( item = '8' description = '8 Items' )
+*                        ( item = '9' description = '9 Items' )
+*                        ( item = '10' description  = '10 Items' )
+*                      ).
+*
+*    MODIFY zaj_anx_items FROM TABLE @li_items.
 
     COMMIT WORK AND WAIT.
     out->write(

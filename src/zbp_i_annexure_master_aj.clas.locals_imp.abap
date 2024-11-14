@@ -25,11 +25,11 @@ CLASS lsc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
 
   METHOD adjust_numbers.
 
-    IF zcl_aj_annexure_bp=>lo_m IS NOT BOUND.
-        zcl_aj_annexure_bp=>lo_m = NEW #(  ).
-    ENDIF.
+    CHECK zcl_aj_annexure_bp=>l_type EQ 'C'.
 
-    DATA(li_master) = zcl_aj_annexure_bp=>lo_m->create_annex_ids( i_master = zcl_aj_annexure_bp=>lo_m->li_master ).
+    DATA(lo_annex) = zcl_aj_annexure_bp=>get_instance( ).
+
+    DATA(li_master) = lo_annex->create_annex_ids( i_master = zcl_aj_annexure_bp=>lo_m->li_master ).
 
     mapped-zi_annexure_master_aj = VALUE #(
                                             FOR lwa_master IN li_master
@@ -42,11 +42,13 @@ CLASS lsc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
 
   METHOD save.
 
-    IF zcl_aj_annexure_bp=>lo_m IS NOT BOUND.
-        zcl_aj_annexure_bp=>lo_m = NEW #(  ).
+    DATA(lo_annex) = zcl_aj_annexure_bp=>get_instance( ).
+    IF zcl_aj_annexure_bp=>l_type = 'D'.
+        lo_annex->delete_annexure( ).
+    ELSE.
+      lo_annex->save_annexure( ).
     ENDIF.
 
-    zcl_aj_annexure_bp=>lo_m->save_annexure( ).
 
   ENDMETHOD.
 
