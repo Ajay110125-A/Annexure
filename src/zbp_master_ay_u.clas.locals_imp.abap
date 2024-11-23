@@ -23,6 +23,10 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ DEFINITION INHERITING FROM cl_abap_behavior_hand
 
     METHODS accept FOR MODIFY
       IMPORTING keys FOR ACTION zi_annexure_master_aj~accept RESULT result.
+    METHODS reject FOR MODIFY
+      IMPORTING keys FOR ACTION zi_annexure_master_aj~reject RESULT result.
+    METHODS progress FOR MODIFY
+      IMPORTING keys FOR ACTION zi_annexure_master_aj~progress RESULT result.
 
 ENDCLASS.
 
@@ -37,7 +41,6 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
 
     IF zcl_aj_annexure_bp=>lo_m IS NOT BOUND.
       zcl_aj_annexure_bp=>lo_m = NEW #(  ).
-*      FIELD-SYMBOLS(<fs_create>) = zcl_aj_annexure_bp=>lo_m.
     ENDIF.
 
     DATA : li_master TYPE  zcl_aj_annexure_bp=>lo_m->t_master_t.
@@ -50,9 +53,6 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
        FROM zaj_anx_type
        INTO TABLE @DATA(li_type).
 
-    SELECT *
-       FROM zaj_anx_status
-       INTO TABLE @DATA(li_status).
 
     LOOP AT entities ASSIGNING FIELD-SYMBOL(<fs_entity>).
 
@@ -91,24 +91,6 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
 
       ENDIF.
 
-      IF NOT line_exists( li_status[ status = <fs_entity>-%data-Status ] ).
-
-        failed-zi_annexure_master_aj = VALUE #( BASE failed-zi_annexure_master_aj ( %cid = <fs_entity>-%cid ) ).
-        reported-zi_annexure_master_aj = VALUE #( BASE reported-zi_annexure_master_aj
-                                                  (
-                                                    %cid = <fs_entity>-%cid %element-status = if_abap_behv=>mk-on
-                                                    %msg =  new_message(
-                                                              id       = 'ZAJ_MESS_ANNEXURE'
-                                                              number   = 003
-                                                              severity = if_abap_behv_message=>severity-error
-                                                              v1       = <fs_entity>-%data-Type
-                                                            )
-                                                  )
-                                                ).
-        l_failed = abap_true.
-
-      ENDIF.
-
       IF <fs_entity>-ItemsCount NOT BETWEEN 1 AND 10.
 
         failed-zi_annexure_master_aj = VALUE #( BASE failed-zi_annexure_master_aj ( %cid = <fs_entity>-%cid ) ).
@@ -137,7 +119,7 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
                                category     = <fs_entity>-%data-Category
                                type         = <fs_entity>-%data-Type
                                itemscount   = <fs_entity>-%data-ItemsCount
-                               status       = <fs_entity>-%data-Status
+                               status       = 'I'
                              )
                            ).
       ENDIF.
@@ -176,6 +158,14 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
 
       IF <fs_entity>-%control-Status = if_abap_behv=>fc-o-disabled.
         <fs_master>-status = <fs_entity>-%data-Status.
+      ENDIF.
+
+      IF lo_annex->l_type = 'A'.
+        <fs_master>-status = 'C'.
+      ELSEIF lo_annex->l_type = 'R'.
+        <fs_master>-status = 'R'.
+      ELSEIF lo_annex->l_type = 'I'..
+        <fs_master>-status = 'I'.
       ENDIF.
 
       IF <fs_entity>-%control-ItemsCount = if_abap_behv=>fc-o-disabled.
@@ -267,9 +257,43 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_instance_features.
+
+    READ ENTITIES OF zi_annexure_master_aj IN LOCAL MODE
+       ENTITY zi_annexure_master_aj
+       FIELDS ( AnnexureId Status )
+       WITH CORRESPONDING #( keys )
+       RESULT DATA(lt_result).
+
+    result = VALUE #(
+                       FOR ls_result IN lt_result
+                       (
+                         %tky = ls_result-%tky
+                         %features-%action-Accept = COND #( WHEN ls_result-%data-Status = 'I'
+                                                                THEN if_abap_behv=>fc-o-enabled
+                                                                ELSE if_abap_behv=>fc-o-disabled
+                                                          )
+                        %features-%action-Reject = COND #(
+                                                           WHEN ls_result-%data-Status = 'I'
+                                                            THEN if_abap_behv=>fc-o-enabled
+                                                            ELSE if_abap_behv=>fc-o-disabled
+                                                         )
+                        %features-%action-Progress = COND #(
+                                                             WHEN ls_result-%data-Status = 'R'
+                                                                THEN if_abap_behv=>fc-o-enabled
+                                                                ELSE if_abap_behv=>fc-o-disabled
+                                                           )
+                       )
+                    ).
+
+
+
   ENDMETHOD.
 
   METHOD Accept.
+
+    DATA(lo_annex) = zcl_aj_annexure_bp=>get_instance( ).
+
+    lo_annex->l_type = 'A'.
 
     MODIFY ENTITIES OF zi_annexure_master_aj IN LOCAL MODE
         ENTITY zi_annexure_master_aj
@@ -292,13 +316,73 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
                         %param = ls_result
                       )
                     ).
-    mapped-zi_annexure_master_aj = VALUE #(
-                                            FOR ls_result IN li_result
-                                            (
-                                                %key = ls_result-%key
-                                            )
-                                          ).
+*    mapped-zi_annexure_master_aj = VALUE #(
+*                                            FOR ls_result IN li_result
+*                                            (
+*                                                %key = ls_result-%key
+*                                            )
+*                                          ).
 
+
+  ENDMETHOD.
+
+  METHOD Reject.
+
+    DATA(lo_annex) = zcl_aj_annexure_bp=>get_instance( ).
+
+    lo_annex->l_type = 'R'.
+
+    MODIFY ENTITIES OF zi_annexure_master_aj IN LOCAL MODE
+        ENTITY zi_annexure_master_aj
+        UPDATE FIELDS ( Status )
+        WITH VALUE #(
+                      FOR ls_keys IN keys
+                      ( %tky = ls_keys-%tky %data-Status = 'R' )
+                    ).
+
+
+    READ ENTITIES OF zi_annexure_master_aj IN LOCAL MODE
+        ENTITY zi_annexure_master_aj
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(li_result).
+
+    result = VALUE #(
+                      FOR ls_result IN li_result
+                      (
+                        %tky = ls_result-%tky
+                        %param = ls_result
+                      )
+                    ).
+
+  ENDMETHOD.
+
+  METHOD Progress.
+
+    DATA(lo_annex) = zcl_aj_annexure_bp=>get_instance( ).
+
+    lo_annex->l_type = 'I'.
+
+    MODIFY ENTITIES OF zi_annexure_master_aj IN LOCAL MODE
+        ENTITY zi_annexure_master_aj
+        UPDATE FIELDS ( Status )
+        WITH VALUE #(
+                      FOR ls_keys IN keys
+                      ( %tky = ls_keys-%tky %data-Status = 'I' )
+                    ).
+
+
+    READ ENTITIES OF zi_annexure_master_aj IN LOCAL MODE
+        ENTITY zi_annexure_master_aj
+        ALL FIELDS WITH CORRESPONDING #( keys )
+        RESULT DATA(li_result).
+
+    result = VALUE #(
+                      FOR ls_result IN li_result
+                      (
+                        %tky = ls_result-%tky
+                        %param = ls_result
+                      )
+                    ).
 
   ENDMETHOD.
 

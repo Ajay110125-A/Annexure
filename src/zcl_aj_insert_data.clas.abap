@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_aj_insert_data IMPLEMENTATION.
+CLASS ZCL_AJ_INSERT_DATA IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.
@@ -60,8 +60,13 @@ CLASS zcl_aj_insert_data IMPLEMENTATION.
 
     DATA : li_status TYPE TABLE OF zaj_anx_status.
 
+    SELECT *
+      FROM zaj_anx_status
+      INTO TABLE @li_status.
+
+    DELETE zaj_anx_status FROM TABLE @li_status.
     li_status = VALUE #(
-                        ( status = 'N' status_desc = 'Not Yet Started'  )
+*                        ( status = 'N' status_desc = 'Not Yet Started'  )
                         ( status = 'C' status_desc = 'Completed'  )
                         ( status = 'I' status_desc = 'In Progress'  )
                         ( status = 'R' status_desc = 'Rejected'  )

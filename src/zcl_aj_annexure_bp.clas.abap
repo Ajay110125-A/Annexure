@@ -56,7 +56,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_aj_annexure_bp IMPLEMENTATION.
+CLASS ZCL_AJ_ANNEXURE_BP IMPLEMENTATION.
+
 
   METHOD create_annexure.
 
@@ -70,6 +71,54 @@ CLASS zcl_aj_annexure_bp IMPLEMENTATION.
       <fs_master>-timestamp = cl_abap_context_info=>get_system_date( ) && cl_abap_context_info=>get_system_time( ).
 
     ENDLOOP.
+
+  ENDMETHOD.
+
+
+  METHOD create_annex_ids.
+
+    DATA : l_annex_id TYPE c LENGTH 60.
+    li_master = CORRESPONDING #( i_master ).
+    LOOP AT li_master ASSIGNING FIELD-SYMBOL(<fs_master>).
+
+      CLEAR : l_annex_id.
+
+      l_annex_id = <fs_master>-category && '_' && cl_abap_context_info=>get_system_date( ).
+      <fs_master>-annexureid = l_annex_id && '_'.
+      l_annex_id = l_annex_id && '_%'.
+
+      SELECT COUNT( * )
+         FROM zaj_annex_master
+         WHERE annexure_id LIKE @l_annex_id
+         INTO @DATA(l_count).
+
+      l_count += 1.
+      <fs_master>-annexureid = <fs_master>-annexureid && CONV string( l_count ).
+
+    ENDLOOP.
+
+    r_master = li_master.
+
+  ENDMETHOD.
+
+
+  METHOD delete_annexure.
+
+    SELECT *
+      FROM zaj_annex_master
+      FOR ALL ENTRIES IN @li_master
+      WHERE annexure_id = @li_master-annexureid
+      INTO TABLE @DATA(li_delete_data).
+
+    DELETE zaj_annex_master FROM TABLE @( CORRESPONDING #( li_delete_data ) ).
+
+  ENDMETHOD.
+
+
+  METHOD get_instance.
+
+    lo_m  = COND #( WHEN lo_m IS BOUND THEN lo_m ELSE NEW #(  ) ).
+    r_annex = lo_m.
 
   ENDMETHOD.
 
@@ -98,31 +147,6 @@ CLASS zcl_aj_annexure_bp IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD create_annex_ids.
-
-    DATA : l_annex_id TYPE c LENGTH 60.
-    li_master = CORRESPONDING #( i_master ).
-    LOOP AT li_master ASSIGNING FIELD-SYMBOL(<fs_master>).
-
-      CLEAR : l_annex_id.
-
-      l_annex_id = <fs_master>-category && '_' && cl_abap_context_info=>get_system_date( ).
-      <fs_master>-annexureid = l_annex_id && '_'.
-      l_annex_id = l_annex_id && '_%'.
-
-      SELECT COUNT( * )
-         FROM zaj_annex_master
-         WHERE annexure_id LIKE @l_annex_id
-         INTO @DATA(l_count).
-
-      l_count += 1.
-      <fs_master>-annexureid = <fs_master>-annexureid && CONV string( l_count ).
-
-    ENDLOOP.
-
-    r_master = li_master.
-
-  ENDMETHOD.
 
   METHOD update_annexure.
 
@@ -135,24 +159,4 @@ CLASS zcl_aj_annexure_bp IMPLEMENTATION.
     ENDLOOP.
 
   ENDMETHOD.
-
-  METHOD get_instance.
-
-    lo_m  = COND #( WHEN lo_m IS BOUND THEN lo_m ELSE NEW #(  ) ).
-    r_annex = lo_m.
-
-  ENDMETHOD.
-
-  METHOD delete_annexure.
-
-    SELECT *
-      FROM zaj_annex_master
-      FOR ALL ENTRIES IN @li_master
-      WHERE annexure_id = @li_master-annexureid
-      INTO TABLE @DATA(li_delete_data).
-
-    DELETE zaj_annex_master FROM TABLE @( CORRESPONDING #( li_delete_data ) ).
-
-  ENDMETHOD.
-
 ENDCLASS.

@@ -6,5 +6,6 @@ define behavior for ZC_ANNEXURE_MASTER_AJ //alias <alias_name>
   use create;
   use update;
   use delete;
- use action Accept;
+// use action Accept;
+//use action Complete;
 }

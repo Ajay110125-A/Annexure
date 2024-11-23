@@ -13,8 +13,11 @@ late numbering
   update;
   delete;
   action ( features : instance ) Accept result [1] $self;
-  field ( readonly ) AnnexureId, CreatedBy, CreatedDate, CreatedTime;
-  field ( mandatory : create ) AnnexureName, ItemsCount, Category, Type, Status;
+  action ( features : instance ) Reject result [1] $self;
+  action ( features : instance ) Progress result [1] $self;
+
+  field ( readonly ) AnnexureId, CreatedBy, CreatedDate, CreatedTime, Status;
+  field ( mandatory : create ) AnnexureName, ItemsCount, Category, Type;
 
   mapping for zaj_annex_master
     {

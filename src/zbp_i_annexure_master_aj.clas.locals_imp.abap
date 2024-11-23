@@ -42,7 +42,7 @@ CLASS lsc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
 
   METHOD save.
 
-    DATA(lo_annex) = zcl_aj_annexure_bp=>get_instance( ).
+   DATA(lo_annex) = zcl_aj_annexure_bp=>get_instance( ).
     IF zcl_aj_annexure_bp=>l_type = 'D'.
         lo_annex->delete_annexure( ).
     ELSE.

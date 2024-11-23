@@ -12,7 +12,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_entity_program IMPLEMENTATION.
+CLASS ZCL_ENTITY_PROGRAM IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 
@@ -40,5 +41,4 @@ CLASS zcl_entity_program IMPLEMENTATION.
     out->write( 'Data' ).
     out->write( li_result ).
   ENDMETHOD.
-
 ENDCLASS.

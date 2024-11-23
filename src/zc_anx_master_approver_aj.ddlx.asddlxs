@@ -9,9 +9,10 @@
            }
 
 }
-annotate entity ZC_ANNEXURE_MASTER_AJ with
+annotate entity ZC_ANX_MASTER_APPROVER_AJ
+    with 
 {
-  @UI.facet: [{
+    @UI.facet: [{
                 id: 'Annexure',
                 purpose: #STANDARD,
                 position: 10,
@@ -20,7 +21,10 @@ annotate entity ZC_ANNEXURE_MASTER_AJ with
              }]
 
   @UI.lineItem: [
-                  { position: 10 }
+                  { position: 10 },
+                  { type: #FOR_ACTION, dataAction: 'Accept', label: 'Complete' },
+                  { type: #FOR_ACTION, dataAction: 'Reject', label: 'Reject' },
+                  { type: #FOR_ACTION, dataAction: 'Progress', label: 'In Progress' }
                 ]
   @UI.lineItem: [{label: 'Annexure ID'}]
   @UI.identification: [{  position: 10, label: 'Annexure ID'}]
@@ -86,5 +90,5 @@ annotate entity ZC_ANNEXURE_MASTER_AJ with
   @Consumption.valueHelpDefinition: [{  entity : { name: 'ZI_ANNEXURE_USERS_VH', element: 'Value'} }]
   @UI.identification: [{  position: 90, label: 'Owner' }]
   CreatedBy;
-
+    
 }

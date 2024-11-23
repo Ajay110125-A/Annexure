@@ -1,0 +1,4 @@
+@EndUserText.label: 'Approver Service Definition'
+define service ZUI_ANX_MASTER_APPROVER_AJ {
+  expose ZC_ANX_MASTER_APPROVER_AJ;
+}

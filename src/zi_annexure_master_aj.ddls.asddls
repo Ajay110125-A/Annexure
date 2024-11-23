@@ -30,5 +30,4 @@ define root view entity ZI_ANNEXURE_MASTER_AJ
       _Type
       
 }
-where
-  status <> 'C'
+
