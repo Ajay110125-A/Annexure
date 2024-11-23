@@ -22,6 +22,8 @@ define root view entity ZC_ANX_MASTER_APPROVER_AJ
       CreatedTime,
       CreatedBy,
       Timestamp,
+      @UI.hidden: true
+      StatusCriticality,
       /* Associations */
       _Status,
       _Type

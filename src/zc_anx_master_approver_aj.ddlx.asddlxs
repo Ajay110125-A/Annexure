@@ -9,16 +9,15 @@
            }
 
 }
-annotate entity ZC_ANX_MASTER_APPROVER_AJ
-    with 
+annotate entity ZC_ANX_MASTER_APPROVER_AJ with
 {
-    @UI.facet: [{
-                id: 'Annexure',
-                purpose: #STANDARD,
-                position: 10,
-                label: 'Annexure Details',
-                type: #IDENTIFICATION_REFERENCE
-             }]
+  @UI.facet: [{
+              id: 'Annexure',
+              purpose: #STANDARD,
+              position: 10,
+              label: 'Annexure Details',
+              type: #IDENTIFICATION_REFERENCE
+           }]
 
   @UI.lineItem: [
                   { position: 10 },
@@ -66,6 +65,7 @@ annotate entity ZC_ANX_MASTER_APPROVER_AJ
   Type;
 
   @UI.lineItem: [{ position: 60 }]
+  @UI.lineItem: [{criticality: 'StatusCriticality' }]
   @UI.lineItem: [{label: 'Status'}]
   @UI.selectionField: [{  position: 20 }]
   @Consumption.valueHelpDefinition: [{ entity:
@@ -90,5 +90,5 @@ annotate entity ZC_ANX_MASTER_APPROVER_AJ
   @Consumption.valueHelpDefinition: [{  entity : { name: 'ZI_ANNEXURE_USERS_VH', element: 'Value'} }]
   @UI.identification: [{  position: 90, label: 'Owner' }]
   CreatedBy;
-    
+
 }

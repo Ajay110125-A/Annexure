@@ -20,6 +20,7 @@ define root view entity ZC_ANNEXURE_MASTER_AJ
       CreatedDate,
       CreatedTime,
       CreatedBy,
+      StatusCriticality,
       //    Timestamp
       _Status
 }

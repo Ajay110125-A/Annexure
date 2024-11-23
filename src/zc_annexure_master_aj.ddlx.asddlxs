@@ -61,7 +61,7 @@ annotate entity ZC_ANNEXURE_MASTER_AJ with
   @UI.identification: [{  position: 50, label: 'Type'}]
   Type;
 
-  @UI.lineItem: [{ position: 60 }]
+  @UI.lineItem: [{ position: 60, criticality: 'StatusCriticality' }]
   @UI.lineItem: [{label: 'Status'}]
   @UI.selectionField: [{  position: 20 }]
   @Consumption.valueHelpDefinition: [{ entity:
