@@ -27,6 +27,8 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ DEFINITION INHERITING FROM cl_abap_behavior_hand
       IMPORTING keys FOR ACTION zi_annexure_master_aj~reject RESULT result.
     METHODS progress FOR MODIFY
       IMPORTING keys FOR ACTION zi_annexure_master_aj~progress RESULT result.
+    METHODS precheck_create FOR PRECHECK
+      IMPORTING entities FOR CREATE zi_annexure_master_aj.
 
 ENDCLASS.
 
@@ -384,6 +386,9 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
                       )
                     ).
 
+  ENDMETHOD.
+
+  METHOD precheck_create.
   ENDMETHOD.
 
 ENDCLASS.

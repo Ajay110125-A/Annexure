@@ -9,7 +9,7 @@ authorization master ( instance )
 etag master Timestamp
 late numbering
 {
-  create;
+  create(precheck);
   update;
   delete;
   action ( features : instance ) Accept result [1] $self;
