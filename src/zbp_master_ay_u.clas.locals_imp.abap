@@ -35,6 +35,55 @@ ENDCLASS.
 CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
 
   METHOD get_instance_authorizations.
+
+    CHECK keys IS NOT INITIAL.
+
+    READ ENTITIES OF zi_annexure_master_aj IN LOCAL MODE
+        ENTITY zi_annexure_master_aj
+        FIELDS ( AnnexureId Status )
+        WITH CORRESPONDING #( keys )
+        RESULT DATA(li_master)
+        FAILED DATA(li_master_failed).
+
+    CHECK li_master_failed IS INITIAL.
+
+    IF sy-subrc EQ 0.
+
+      LOOP AT li_master ASSIGNING FIELD-SYMBOL(<fs_master>).
+
+        IF requested_authorizations-%update = if_abap_behv=>mk-on.
+
+            DATA(l_update) = COND #( WHEN <fs_master>-status = 'C'
+                                        THEN if_abap_behv=>auth-unauthorized
+                                     ELSE
+                                        if_abap_behv=>auth-allowed
+                                   ).
+
+        ENDIF.
+
+        IF requested_authorizations-%delete = if_abap_behv=>mk-on.
+
+            DATA(l_delete) = COND #( WHEN <fs_master>-status = 'C'
+                                       THEN if_abap_behv=>auth-unauthorized
+                                     ELSE
+                                        if_abap_behv=>auth-allowed
+                                   ).
+
+        ENDIF.
+
+        result = VALUE #(
+                          BASE result
+                          (
+                            %tky =  <fs_master>-%tky
+                            %update = l_update
+                            %delete = l_delete
+                          )
+                        ).
+
+      ENDLOOP.
+
+    ENDIF.
+
   ENDMETHOD.
 
   METHOD create.
@@ -389,6 +438,104 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD precheck_create.
+
+    SELECT *
+     FROM zaj_anx_category
+     INTO TABLE @DATA(li_cate).
+
+    SELECT *
+     FROM zaj_anx_type
+     INTO TABLE @DATA(li_type).
+
+    LOOP AT entities ASSIGNING FIELD-SYMBOL(<fs_entity>).
+
+      IF NOT line_exists( li_cate[ user_id = cl_abap_context_info=>get_user_technical_name( ) category = <fs_entity>-%data-Category ] ).
+
+        failed-zi_annexure_master_aj = VALUE #( BASE failed-zi_annexure_master_aj ( %cid = <fs_entity>-%cid ) ).
+        reported-zi_annexure_master_aj = VALUE #( BASE reported-zi_annexure_master_aj
+                                                  ( %cid = <fs_entity>-%cid %element-category = if_abap_behv=>mk-on
+                                                    %msg =  new_message(
+                                                              id       = 'ZAJ_MESS_ANNEXURE'
+                                                              number   = 001
+                                                              severity = if_abap_behv_message=>severity-error
+                                                              v1       = <fs_entity>-%data-Category
+                                                            )
+                                                  )
+                                                ).
+*        l_failed = abap_true.
+
+      ENDIF.
+
+      IF NOT line_exists( li_type[ type = <fs_entity>-%data-Type ] ).
+
+        failed-zi_annexure_master_aj = VALUE #( BASE failed-zi_annexure_master_aj ( %cid = <fs_entity>-%cid ) ).
+        reported-zi_annexure_master_aj = VALUE #( BASE reported-zi_annexure_master_aj
+                                                  (
+                                                    %cid = <fs_entity>-%cid %element-type = if_abap_behv=>mk-on
+                                                    %msg =  new_message(
+                                                              id       = 'ZAJ_MESS_ANNEXURE'
+                                                              number   = 002
+                                                              severity = if_abap_behv_message=>severity-error
+                                                              v1       = <fs_entity>-%data-Type
+                                                            )
+                                                  )
+                                                ).
+*        l_failed = abap_true.
+
+      ENDIF.
+
+      IF <fs_entity>-ItemsCount NOT BETWEEN 1 AND 10.
+
+        failed-zi_annexure_master_aj = VALUE #( BASE failed-zi_annexure_master_aj ( %cid = <fs_entity>-%cid ) ).
+        reported-zi_annexure_master_aj = VALUE #( BASE reported-zi_annexure_master_aj
+                                                  (
+                                                    %cid = <fs_entity>-%cid %element-itemscount = if_abap_behv=>mk-on
+                                                    %msg =  new_message(
+                                                              id       = 'ZAJ_MESS_ANNEXURE'
+                                                              number   = 004
+                                                              severity = if_abap_behv_message=>severity-error
+                                                            )
+                                                  )
+                                                ).
+*        l_failed = abap_true.
+
+      ENDIF.
+
+*      IF l_failed = abap_false.
+*        mapped-zi_annexure_master_aj = VALUE #( BASE mapped-zi_annexure_master_aj ( %cid =  <fs_entity>-%cid ) ).
+*
+*        li_master = VALUE #(
+*                             BASE li_master
+*                             (
+*                               cid = <fs_entity>-%cid
+*                               annexurename = <fs_entity>-%data-AnnexureName
+*                               category     = <fs_entity>-%data-Category
+*                               type         = <fs_entity>-%data-Type
+*                               itemscount   = <fs_entity>-%data-ItemsCount
+*                               status       = 'I'
+*                             )
+*                           ).
+*      ENDIF.
+
+    ENDLOOP.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   ENDMETHOD.
 
 ENDCLASS.
