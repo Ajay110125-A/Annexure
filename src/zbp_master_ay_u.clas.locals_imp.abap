@@ -29,6 +29,8 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ DEFINITION INHERITING FROM cl_abap_behavior_hand
       IMPORTING keys FOR ACTION zi_annexure_master_aj~progress RESULT result.
     METHODS precheck_create FOR PRECHECK
       IMPORTING entities FOR CREATE zi_annexure_master_aj.
+    METHODS get_global_authorizations FOR GLOBAL AUTHORIZATION
+      IMPORTING REQUEST requested_authorizations FOR zi_annexure_master_aj RESULT result.
 
 ENDCLASS.
 
@@ -536,6 +538,9 @@ CLASS lhc_ZI_ANNEXURE_MASTER_AJ IMPLEMENTATION.
 
 
 
+  ENDMETHOD.
+
+  METHOD get_global_authorizations.
   ENDMETHOD.
 
 ENDCLASS.

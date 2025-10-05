@@ -5,7 +5,7 @@ define behavior for ZI_ANNEXURE_MASTER_AJ //alias <alias_name>
 //persistent table <???>
 implementation in class ZBP_MASTER_AY_U unique
 lock master
-authorization master ( instance )
+authorization master ( global, instance )
 etag master Timestamp
 late numbering
 {
